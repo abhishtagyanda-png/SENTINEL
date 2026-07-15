@@ -2,7 +2,6 @@ chromadb
 sentence-transformers
 cryptography
 ollama
-streamlit
 numpy
 pandas
 fastapi
