@@ -83,7 +83,7 @@ def create_forensic_report(scene_tokens: dict, reasoning: dict, location: str) -
     os.makedirs(REPORTS_DIR, exist_ok=True)
     private_key, _ = load_keys()
     
-    report_id = f"SENTINEL-{int(time.time() * 1000)}"
+    report_id = f"VIGIL-{int(time.time() * 1000)}"
     report = {
         "report_id": report_id,
         "timestamp_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -109,7 +109,7 @@ def create_forensic_report(scene_tokens: dict, reasoning: dict, location: str) -
     
     report["sha256_hash"] = sha256_hash
     report["signature_hex"] = signature.hex()
-    report["verification_note"] = "Verify with SENTINEL public key. Hash covers all fields above."
+    report["verification_note"] = "Verify with VIGIL public key. Hash covers all fields above."
     
     # Save file
     filename = os.path.join(REPORTS_DIR, f"{report_id}.json")

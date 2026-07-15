@@ -17,7 +17,7 @@ def check_ollama_status():
     except Exception:
         return False
 
-def tokenise_scene(image_path: str) -> dict:
+def tokenise_scene(image_path: str, acoustic_token: str = None) -> dict:
     """
     Reads an image frame, converts to base64, and prompts Gemma 4 E4B
     running locally to produce structured scene tokens.
@@ -49,6 +49,10 @@ anomaly_score rules:
 - 0.6-0.8: likely incident, escalate
 - 0.8-1.0: confirmed high-risk, escalate immediately"""
 
+    prompt_content = prompt
+    if acoustic_token:
+        prompt_content = f"Acoustic Fusion Trigger Signal: {acoustic_token}\n\n" + prompt
+
     if not check_ollama_status():
         print("Ollama service not responsive or gemma4:e4b not loaded. Running fallback tokenizer simulation.")
         # Extract filename to guess scenario for mock output
@@ -61,7 +65,7 @@ anomaly_score rules:
             model="gemma4:e4b",
             messages=[{
                 "role": "user",
-                "content": prompt,
+                "content": prompt_content,
                 "images": [img_b64]
             }]
         )
@@ -81,7 +85,7 @@ anomaly_score rules:
         filename = os.path.basename(image_path).lower()
         return get_fallback_tokens(filename)
 
-def tokenise_sensor_row(row: dict) -> dict:
+def tokenise_sensor_row(row: dict, acoustic_token: str = None) -> dict:
     """
     Takes an IoT sensor dictionary, converts to text, and queries Gemma 4 E4B
     running locally to produce structured scene tokens.
@@ -103,14 +107,18 @@ Respond ONLY with valid JSON. No explanation. No markdown.
   "reasoning_for_score": "one sentence"
 }}"""
 
+    prompt_content = prompt
+    if acoustic_token:
+        prompt_content = f"Acoustic Fusion Trigger Signal: {acoustic_token}\n\n" + prompt
+
     if not check_ollama_status():
         print("Ollama service not responsive or gemma4:e4b not loaded. Running fallback sensor simulation.")
-        return get_fallback_sensor_tokens(row)
+        return get_fallback_sensor_tokens(row, acoustic_token)
 
     try:
         response = ollama.chat(
             model="gemma4:e4b",
-            messages=[{"role": "user", "content": prompt}]
+            messages=[{"role": "user", "content": prompt_content}]
         )
         raw = response["message"]["content"].strip()
         
@@ -124,7 +132,7 @@ Respond ONLY with valid JSON. No explanation. No markdown.
         return json.loads(raw)
     except Exception as e:
         print(f"Ollama tokenise_sensor_row API error: {e}. Falling back to simulation.")
-        return get_fallback_sensor_tokens(row)
+        return get_fallback_sensor_tokens(row, acoustic_token)
 
 def get_fallback_tokens(filename: str, error_msg: str = "") -> dict:
     """
@@ -172,7 +180,7 @@ def get_fallback_tokens(filename: str, error_msg: str = "") -> dict:
             "reasoning_for_score": "Person loitering in a semi-restricted corridor with no clear purpose."
         }
 
-def get_fallback_sensor_tokens(row: dict) -> dict:
+def get_fallback_sensor_tokens(row: dict, acoustic_token: str = None) -> dict:
     """
     Simulated sensor tokenization output.
     """

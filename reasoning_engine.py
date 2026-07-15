@@ -12,7 +12,7 @@ def reason_about_incident(scene_tokens: dict, retrieved_context: list) -> dict:
     context_text = "\n".join([f"- {c}" for c in retrieved_context])
     scene_text = json.dumps(scene_tokens, indent=2)
 
-    prompt = f"""You are SENTINEL's semantic reasoning engine. Your job is to determine whether a flagged scene is a genuine public safety incident or a false alarm.
+    prompt = f"""You are VIGIL's semantic reasoning engine. Your job is to determine whether a flagged scene is a genuine public safety incident or a false alarm.
 
 SCENE ANALYSIS FROM EDGE SENSOR:
 {scene_text}

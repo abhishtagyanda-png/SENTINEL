@@ -1,4 +1,4 @@
-# 🛡️ SENTINEL
+# 🛡️ VIGIL
 ### Semantic Edge Intelligence for Noise-Tolerant, Explainable, and Latency-Free Incident Notification
 
 > **A Gemma 4-powered, three-layer multimodal pipeline that transforms traditional surveillance into an explainable, privacy-first, edge AI incident verification system.**
@@ -33,9 +33,9 @@ The problem isn't detecting motion.
 
 # 💡 Our Solution
 
-**SENTINEL** is an explainable, privacy-first AI surveillance pipeline built entirely around **Google Gemma 4**.
+**VIGIL** is an explainable, privacy-first AI surveillance pipeline built entirely around **Google Gemma 4**.
 
-Instead of forwarding every event to a human operator, SENTINEL performs intelligent multi-stage reasoning locally and only escalates incidents that genuinely require attention.
+Instead of forwarding every event to a human operator, VIGIL performs intelligent multi-stage reasoning locally and only escalates incidents that genuinely require attention.
 
 Every decision is accompanied by:
 
@@ -103,7 +103,7 @@ No citizen footage ever leaves the deployment site.
 
 ---
 
-# 🧠 How SENTINEL Works
+# 🧠 How VIGIL Works
 
 ## Layer 1 — Edge Perception
 
@@ -321,7 +321,7 @@ We solved this using constrained decoding with a fixed safety taxonomy.
 # 📂 Project Structure
 
 ```text
-SENTINEL/
+VIGIL/
 │
 ├── app/
 │   ├── edge_ai/
@@ -345,9 +345,9 @@ SENTINEL/
 Clone the repository
 
 ```bash
-git clone https://github.com/<username>/SENTINEL.git
+git clone https://github.com/<username>/VIGIL.git
 
-cd SENTINEL
+cd VIGIL
 ```
 
 Install dependencies

@@ -9,7 +9,7 @@ embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Setup persistent ChromaDB client
 client = chromadb.PersistentClient(path="./chroma_db")
-collection = client.get_or_create_collection("sentinel_knowledge")
+collection = client.get_or_create_collection("vigil_knowledge")
 
 # Default mock policies and histories for safety and security tracking
 DEFAULT_POLICIES = [
@@ -41,10 +41,10 @@ def build_rag_store(force_rebuild=False):
     if force_rebuild:
         print("Clearing existing RAG store...")
         try:
-            client.delete_collection("sentinel_knowledge")
+            client.delete_collection("vigil_knowledge")
         except Exception:
             pass
-        collection = client.create_collection("sentinel_knowledge")
+        collection = client.create_collection("vigil_knowledge")
 
     print("Building RAG store...")
     all_docs = DEFAULT_POLICIES + DEFAULT_HISTORY

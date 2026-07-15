@@ -1,7 +1,7 @@
 # Product Requirements Document (PRD)
-## SENTINEL — Operator Dashboard Frontend
+## VIGIL — Operator Dashboard Frontend
 
-This document outlines the product requirements and technical specs for building the **SENTINEL Operator Dashboard** using **Next.js**, **React**, **Tailwind CSS**, and **shadcn/ui**.
+This document outlines the product requirements and technical specs for building the **VIGIL Operator Dashboard** using **Next.js**, **React**, **Tailwind CSS**, and **shadcn/ui**.
 
 The frontend will run on the `frontend` branch and connect to the local Python REST API backend running on `http://localhost:8000`.
 
@@ -9,7 +9,7 @@ The frontend will run on the `frontend` branch and connect to the local Python R
 
 ## 1. Product Vision & Aesthetics
 
-SENTINEL replaces noisy, unexplainable black-box security alerts with cryptographically verified, chain-of-thought explained safety reports. 
+VIGIL replaces noisy, unexplainable black-box security alerts with cryptographically verified, chain-of-thought explained safety reports. 
 
 ### Visual Guidelines:
 *   **Theme**: Cyberpunk-influenced, premium dark mode (`bg-slate-950`, `text-slate-50`). Avoid generic white backgrounds. It should feel like a high-end security operations center (SOC).
@@ -29,16 +29,16 @@ The interface should be a **single-page dashboard** divided into three main grid
 
 ```
 +------------------------------------------------------------------------------+
-| 🛡️ SENTINEL                      [🟢 SYSTEM STATUS: ONLINE / Ollama: Ready]  |
+| 🛡️ VIGIL                      [🟢 SYSTEM STATUS: ONLINE / Ollama: Ready]  |
 +------------------------------------------------------------------------------+
 |  📡 Local Edge Feeds     |  🧠 Gemma 4 Reasoning Trace |  🔏 Forensic Vault  |
 |  (Trigger simulation)    |                             |                      |
 |                          |  - Anomaly Score Status     |  - SHA-256 Hash      |
 |  ----------------------  |  - Decision Badge           |  - RSA Signature     |
 |  📂 Incident Queue       |  - 5-Step CoT Accordion     |  - Verify button     |
-|  - SENTINEL-17840... 🔴  |  - Operator Briefing Box    |  ------------------- |
-|  - SENTINEL-17840... 🟡  |                             |  💬 NLP Assistant    |
-|  - SENTINEL-17840... 🟢  |                             |  [Ask natural query] |
+|  - VIGIL-17840... 🔴  |  - Operator Briefing Box    |  ------------------- |
+|  - VIGIL-17840... 🟡  |                             |  💬 NLP Assistant    |
+|  - VIGIL-17840... 🟢  |                             |  [Ask natural query] |
 +------------------------------------------------------------------------------+
 ```
 
@@ -103,7 +103,7 @@ All API endpoints are hosted on `http://localhost:8000` (FastAPI).
     ```json
     [
       {
-        "report_id": "SENTINEL-1784097007780",
+        "report_id": "VIGIL-1784097007780",
         "timestamp_utc": "2026-07-15T06:31:01Z",
         "location": "Server Room B3",
         "decision": "ESCALATE",
@@ -119,7 +119,7 @@ All API endpoints are hosted on `http://localhost:8000` (FastAPI).
 *   **Response**:
     ```json
     {
-      "report_id": "SENTINEL-1784097007780",
+      "report_id": "VIGIL-1784097007780",
       "timestamp_utc": "2026-07-15T06:31:01Z",
       "location": "Server Room B3",
       "decision": "ESCALATE",
@@ -163,7 +163,7 @@ All API endpoints are hosted on `http://localhost:8000` (FastAPI).
 *   **Response**:
     ```json
     {
-      "report_id": "SENTINEL-1784097007780",
+      "report_id": "VIGIL-1784097007780",
       "cryptographic_verification": "SUCCESS",
       "sha256_hash": "03af5a9d2e4677...",
       "tampered": false
@@ -182,7 +182,7 @@ All API endpoints are hosted on `http://localhost:8000` (FastAPI).
     ```json
     {
       "query": "Were there any security breaches near the server room last night?",
-      "answer": "Yes. Report SENTINEL-1784097007780 recorded a security breach at Server Room B3 at 03:15. Two individuals were detected tampering with locks..."
+      "answer": "Yes. Report VIGIL-1784097007780 recorded a security breach at Server Room B3 at 03:15. Two individuals were detected tampering with locks..."
     }
     ```
 

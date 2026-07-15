@@ -77,7 +77,7 @@ def run_pipeline(dataset_path: str, location_tag: str = "Transit-Terminal-Edge")
     Edge, RAG, Reasoning, and Forensic layers.
     """
     print("=" * 60)
-    print("           SENTINEL PIPELINE RUNNER DEPLOYED")
+    print("             VIGIL PIPELINE RUNNER DEPLOYED")
     print("=" * 60)
 
     # Initialize RAG Database

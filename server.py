@@ -14,7 +14,7 @@ from query_engine import operator_query
 
 # Initialize FastAPI
 app = FastAPI(
-    title="SENTINEL Backend REST API",
+    title="VIGIL Backend REST API",
     description="3-Layer Gemma 4 Edge Public Safety Incident Verification Pipeline API",
     version="1.0.0"
 )
@@ -42,10 +42,12 @@ class EventSensorInput(BaseModel):
     door_state: str
     people_count: int
     camera_feed_summary: str
+    acoustic_tokens: Optional[str] = None
 
 class ImageInput(BaseModel):
     image_path: str
     location: str
+    acoustic_tokens: Optional[str] = None
 
 class QueryInput(BaseModel):
     question: str
@@ -62,7 +64,7 @@ def load_report_by_id(report_id: str) -> dict:
 @app.get("/api/status")
 def get_status():
     """
-    Returns the overall status of the SENTINEL pipeline subsystems.
+    Returns the overall status of the VIGIL pipeline subsystems.
     """
     ollama_ready = check_ollama_status()
     rag_doc_count = collection.count() if collection else 0
@@ -120,7 +122,7 @@ def trigger_sensor_event(event: EventSensorInput):
     and returns decision and signed report details.
     """
     event_dict = event.dict()
-    tokens = tokenise_sensor_row(event_dict)
+    tokens = tokenise_sensor_row(event_dict, event.acoustic_tokens)
     anomaly_score = tokens.get("anomaly_score", 0.0)
     
     if anomaly_score < 0.35:
@@ -165,7 +167,7 @@ def trigger_image_event(image_input: ImageInput):
     if not os.path.exists(image_input.image_path):
         raise HTTPException(status_code=400, detail=f"Image file {image_input.image_path} not found")
         
-    tokens = tokenise_scene(image_input.image_path)
+    tokens = tokenise_scene(image_input.image_path, image_input.acoustic_tokens)
     anomaly_score = tokens.get("anomaly_score", 0.0)
     
     if anomaly_score < 0.35:
