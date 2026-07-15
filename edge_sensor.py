@@ -138,7 +138,8 @@ def get_fallback_tokens(filename: str, error_msg: str = "") -> dict:
     """
     Simulated outputs when offline or Ollama is loading. Helps during testing and demo.
     """
-    if "breach" in filename or "restricted" in filename:
+    fn = filename.lower()
+    if any(x in fn for x in ["breach", "restricted", "intrusion", "tamper", "forced", "suspect", "hood", "alarm", "siren", "cam"]):
         return {
             "entities": ["two adult males", "one locked server room door"],
             "actions": ["one male attempting to pick the lock", "other male standing lookout"],
@@ -148,7 +149,7 @@ def get_fallback_tokens(filename: str, error_msg: str = "") -> dict:
             "preliminary_intent": "security_breach",
             "reasoning_for_score": "Unauthorized door tampering detected in restricted corridor B3 at night."
         }
-    elif "maintenance" in filename or "clean" in filename:
+    elif any(x in fn for x in ["maintenance", "clean", "staff", "worker", "vest", "mop"]):
         return {
             "entities": ["one adult male", "cleaning cart", "mop"],
             "actions": ["cleaning the server room floor", "moving cart"],
@@ -158,7 +159,7 @@ def get_fallback_tokens(filename: str, error_msg: str = "") -> dict:
             "preliminary_intent": "maintenance_activity",
             "reasoning_for_score": "Individual in high-visibility vest cleaning the floors, consistent with daily duties."
         }
-    elif "transit" in filename or "normal" in filename:
+    elif any(x in fn for x in ["transit", "normal", "lobby", "passenger", "commuter", "clear"]):
         return {
             "entities": ["three passengers", "baggage"],
             "actions": ["walking through main lobby toward platforms"],
