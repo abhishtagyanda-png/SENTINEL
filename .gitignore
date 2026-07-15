@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+chroma_db/
+model_cache/
+keys/
+reports/
+.env
+.ipynb_checkpoints/

@@ -1,0 +1,9 @@
+{
+  "event_id": "EVT-003",
+  "timestamp": "21:30",
+  "location": "Server Room B3",
+  "motion_detected": true,
+  "door_state": "open",
+  "people_count": 1,
+  "camera_feed_summary": "Bob entering the room with a cleaning mop and bucket, wearing high-visibility orange vest."
+}

@@ -1,0 +1,9 @@
+{
+  "event_id": "EVT-002",
+  "timestamp": "03:15",
+  "location": "Server Room B3",
+  "motion_detected": true,
+  "door_state": "forced",
+  "people_count": 2,
+  "camera_feed_summary": "Two individuals in dark clothing tampering with server rack door locks."
+}

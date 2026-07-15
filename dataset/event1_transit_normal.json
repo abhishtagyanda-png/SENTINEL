@@ -1,0 +1,9 @@
+{
+  "event_id": "EVT-001",
+  "timestamp": "14:30",
+  "location": "Main Lobby Area",
+  "motion_detected": true,
+  "door_state": "closed",
+  "people_count": 5,
+  "camera_feed_summary": "Transit passengers walking with suitcases near ticketing counters."
+}
