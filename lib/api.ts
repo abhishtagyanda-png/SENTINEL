@@ -58,6 +58,22 @@ export interface TriggerPayload {
   acoustic_tokens?: string;
 }
 
+export interface ImagePayload {
+  image_path: string;
+  location: string;
+  acoustic_tokens?: string;
+}
+
+export interface TriggerResponse {
+  processed: boolean;
+  action: string;
+  anomaly_score: number;
+  preliminary_intent: string;
+  report: ReportDetail | null;
+  message?: string;
+  reasoning_for_score?: string;
+}
+
 export interface VerifyResponse {
   report_id: string;
   cryptographic_verification: "SUCCESS" | "FAILED";
@@ -142,7 +158,8 @@ async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
     },
   });
   if (!res.ok) {
-    throw new Error(`API Error ${res.status}: ${res.statusText}`);
+    const errorText = await res.text().catch(() => "");
+    throw new Error(`API Error ${res.status}: ${res.statusText}. ${errorText}`);
   }
   return res.json();
 }
@@ -159,8 +176,15 @@ export async function getReportDetail(reportId: string): Promise<ReportDetail> {
   return apiFetch<ReportDetail>(`/api/reports/${reportId}`);
 }
 
-export async function triggerSensor(payload: TriggerPayload): Promise<ReportDetail> {
-  return apiFetch<ReportDetail>("/api/trigger/sensor", {
+export async function triggerSensor(payload: TriggerPayload): Promise<TriggerResponse> {
+  return apiFetch<TriggerResponse>("/api/trigger/sensor", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function triggerImage(payload: ImagePayload): Promise<TriggerResponse> {
+  return apiFetch<TriggerResponse>("/api/trigger/image", {
     method: "POST",
     body: JSON.stringify(payload),
   });
