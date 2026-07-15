@@ -190,6 +190,22 @@ export async function triggerImage(payload: ImagePayload): Promise<TriggerRespon
   });
 }
 
+export async function triggerAudio(file: File, location: string): Promise<TriggerResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("location", location);
+
+  const res = await fetch(`${API_BASE}/api/trigger/audio`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => "");
+    throw new Error(`API Error ${res.status}: ${res.statusText}. ${errorText}`);
+  }
+  return res.json();
+}
+
 export async function verifyReport(reportId: string): Promise<VerifyResponse> {
   return apiFetch<VerifyResponse>(`/api/verify/${reportId}`);
 }

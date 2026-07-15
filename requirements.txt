@@ -6,4 +6,6 @@ numpy
 pandas
 fastapi
 uvicorn
-
+tflite-runtime
+scipy
+python-multipart

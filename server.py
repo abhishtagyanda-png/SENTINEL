@@ -2,7 +2,7 @@ import os
 import glob
 import json
 from typing import Optional, Dict, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -11,6 +11,7 @@ from edge_sensor import tokenise_sensor_row, tokenise_scene, check_ollama_status
 from reasoning_engine import reason_about_incident
 from forensic_logger import create_forensic_report, verify_forensic_report, REPORTS_DIR
 from query_engine import operator_query
+from acoustic_classifier import classify_audio
 
 # Initialize FastAPI
 app = FastAPI(
@@ -243,6 +244,57 @@ def verify_report_integrity(report_id: str):
         "sha256_hash": report.get("sha256_hash"),
         "tampered": not is_valid
     }
+
+@app.post("/api/trigger/audio")
+async def trigger_audio_event(file: UploadFile = File(...), location: str = Form(...)):
+    """
+    Ingests an uploaded .wav file, runs YAMNet ONNX audio classification to detect
+    anomalies (screams, glass breaks, bangs, sirens), prepends that Acoustic Token
+    to a simulated sensor event, and outputs a signed forensic reasoning trace.
+    """
+    import random
+    import datetime
+    
+    # 1. Save uploaded file to a temporary location
+    temp_dir = "temp_audio"
+    os.makedirs(temp_dir, exist_ok=True)
+    temp_file_path = os.path.join(temp_dir, file.filename)
+    
+    try:
+        with open(temp_file_path, "wb") as f:
+            content = await file.read()
+            f.write(content)
+            
+        # 2. Run YAMNet classification
+        acoustic_token = classify_audio(temp_file_path)
+    finally:
+        # Clean up file after classification
+        if os.path.exists(temp_file_path):
+            try:
+                os.remove(temp_file_path)
+            except Exception:
+                pass
+                
+    # 3. Simulate sensor event telemetry aligned with the audio context
+    # If YAMNet detected screaming, banging, weapons, or alarms, we simulate a breach/forced event
+    is_breach = any(x in acoustic_token for x in ["SCREAM", "BANGING", "DISCHARGE", "ALARM", "GLASS_BREAK"])
+    
+    evt_id = f"EVT-{random.randint(100, 999)}"
+    now_str = datetime.datetime.now().strftime("%H:%M")
+    
+    simulated_event = EventSensorInput(
+        event_id=evt_id,
+        timestamp=now_str,
+        location=location,
+        motion_detected=True if is_breach else False,
+        door_state="forced" if is_breach else "normal",
+        people_count=random.randint(2, 4) if is_breach else 1,
+        camera_feed_summary="Audio anomaly detected by acoustic sensors, triggering automated alert verification." if is_breach else "Regular background activity with normal ambient noise.",
+        acoustic_tokens=acoustic_token
+    )
+    
+    # 4. Trigger the standard sensor trigger logic
+    return trigger_sensor_event(simulated_event)
 
 if __name__ == "__main__":
     import uvicorn
