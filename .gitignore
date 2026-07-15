@@ -1,3 +1,4 @@
+# backend ignores
 __pycache__/
 *.pyc
 chroma_db/
@@ -6,3 +7,34 @@ keys/
 reports/
 .env
 .ipynb_checkpoints/
+
+# dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+
+# debug
+npm-debug.log*
+
+# env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
