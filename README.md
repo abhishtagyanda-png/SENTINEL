@@ -68,7 +68,7 @@ No citizen footage ever leaves the deployment site.
                          │
                          ▼
 ┌──────────────────────────────────────────────────────────────┐
-│ Layer 1 : Edge Perception                                   │
+│ Layer 1 : Edge Perception                                    │
 │ Gemma 4 E2B / E4B                                            │
 │ • Scene Understanding                                        │
 │ • Object Detection                                           │
@@ -80,8 +80,8 @@ No citizen footage ever leaves the deployment site.
                          │
                          ▼
 ┌──────────────────────────────────────────────────────────────┐
-│ Layer 2 : Semantic Reasoning                                │
-│ Gemma 4 27B / 31B + Agentic RAG                             │
+│ Layer 2 : Semantic Reasoning                                 │
+│ Gemma 4 27B / 31B + Agentic RAG                              │
 │ • Function Calling                                           │
 │ • Policy Retrieval                                           │
 │ • Schedule Verification                                      │
@@ -93,7 +93,7 @@ No citizen footage ever leaves the deployment site.
                          │
                          ▼
 ┌──────────────────────────────────────────────────────────────┐
-│ Layer 3 : Forensic Output                                   │
+│ Layer 3 : Forensic Output                                    │
 │ • Incident Report                                            │
 │ • SHA-256 Hash                                               │
 │ • RSA Digital Signature                                      │
@@ -374,7 +374,7 @@ python app.py
 
 # 👥 Team
 
-**Team Name:** *[Insert Team Name]*
+**Team Name:** *[GradientMinds]*
 
 - Asees Jot Singh
 - Abhishta Gyanda
