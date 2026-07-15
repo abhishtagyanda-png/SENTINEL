@@ -206,6 +206,25 @@ export async function triggerAudio(file: File, location: string): Promise<Trigge
   return res.json();
 }
 
+export async function triggerImageUpload(file: File, location: string, acousticTokens?: string): Promise<TriggerResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("location", location);
+  if (acousticTokens) {
+    formData.append("acoustic_tokens", acousticTokens);
+  }
+
+  const res = await fetch(`${API_BASE}/api/trigger/image_upload`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => "");
+    throw new Error(`API Error ${res.status}: ${res.statusText}. ${errorText}`);
+  }
+  return res.json();
+}
+
 export async function verifyReport(reportId: string): Promise<VerifyResponse> {
   return apiFetch<VerifyResponse>(`/api/verify/${reportId}`);
 }

@@ -204,6 +204,71 @@ def trigger_image_event(image_input: ImageInput):
         "report": report
     }
 
+@app.post("/api/trigger/image_upload")
+async def trigger_image_upload_event(
+    file: UploadFile = File(...),
+    location: str = Form(...),
+    acoustic_tokens: Optional[str] = Form(None)
+):
+    """
+    Ingests an uploaded camera frame image file, processes through Layer 1 vision tokenization,
+    runs RAG CoT reasoning, and outputs signed reports.
+    """
+    temp_dir = "temp_images"
+    os.makedirs(temp_dir, exist_ok=True)
+    temp_file_path = os.path.join(temp_dir, file.filename)
+    
+    try:
+        with open(temp_file_path, "wb") as f:
+            content = await file.read()
+            f.write(content)
+            
+        # Run visual pipeline on saved temp file
+        tokens = tokenise_scene(temp_file_path, acoustic_tokens)
+    finally:
+        # Clean up temp file after tokenization
+        if os.path.exists(temp_file_path):
+            try:
+                os.remove(temp_file_path)
+            except Exception:
+                pass
+                
+    anomaly_score = tokens.get("anomaly_score", 0.0)
+    
+    if anomaly_score < 0.35:
+        return {
+            "processed": True,
+            "action": "SUPPRESSED",
+            "anomaly_score": anomaly_score,
+            "preliminary_intent": tokens.get("preliminary_intent"),
+            "reasoning_for_score": tokens.get("reasoning_for_score"),
+            "message": "Visual feed normal. Suppressed at the edge.",
+            "report": None
+        }
+        
+    # Search RAG
+    search_query = f"{tokens.get('preliminary_intent', '')} in {location} {tokens.get('spatial_layout', '')}"
+    context = retrieve_context(search_query, n_results=3)
+    
+    # Reason
+    reasoning = reason_about_incident(tokens, context)
+    decision = reasoning.get("decision", "HOLD_FOR_REVIEW")
+    
+    # Sign report
+    report = None
+    if decision in ["ESCALATE", "HOLD_FOR_REVIEW"]:
+        report = create_forensic_report(tokens, reasoning, location)
+        
+    return {
+        "processed": True,
+        "action": decision,
+        "anomaly_score": anomaly_score,
+        "preliminary_intent": tokens.get("preliminary_intent"),
+        "reasoning": reasoning,
+        "report": report
+    }
+
+
 @app.post("/api/query")
 def query_reports(query: QueryInput):
     """

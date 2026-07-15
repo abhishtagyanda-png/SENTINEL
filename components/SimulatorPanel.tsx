@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { triggerSensor, triggerImage, triggerAudio, MOCK_EVENTS, type ReportDetail } from "@/lib/api";
+import { triggerSensor, triggerImage, triggerAudio, triggerImageUpload, MOCK_EVENTS, type ReportDetail } from "@/lib/api";
 import { Radio, Loader2, ChevronDown, Zap, Volume2, Settings, FileText, Image as ImageIcon, Sliders } from "lucide-react";
 
 interface SimulatorPanelProps {
@@ -26,6 +26,7 @@ export default function SimulatorPanel({ onNewReport }: SimulatorPanelProps) {
   const [imagePath, setImagePath] = useState("C:/path/to/test_image.jpg");
   const [acousticTokens, setAcousticTokens] = useState("[AUDIO: METALLIC_SCRAPING]");
   const [audioFile, setAudioFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const handleTriggerPreset = async () => {
@@ -68,12 +69,12 @@ export default function SimulatorPanel({ onNewReport }: SimulatorPanelProps) {
           setStatusMessage(`Suppressed at Edge: Anomaly Score ${result.anomaly_score.toFixed(2)} (${result.action})`);
         }
       } else if (customType === "image") {
-        const payload = {
-          image_path: imagePath.trim(),
-          location,
-          acoustic_tokens: acousticTokens.trim() || undefined,
-        };
-        const result = await triggerImage(payload);
+        if (!imageFile) {
+          setStatusMessage("Please select an image file to simulate.");
+          setLoading(false);
+          return;
+        }
+        const result = await triggerImageUpload(imageFile, location, acousticTokens.trim() || undefined);
         if (result.report) {
           onNewReport(result.report);
         } else {
@@ -351,18 +352,27 @@ export default function SimulatorPanel({ onNewReport }: SimulatorPanelProps) {
               <>
                 <div>
                   <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1">
-                    Local Absolute Image Path
+                    Upload Visual Feed (Image)
                   </label>
-                  <input
-                    type="text"
-                    value={imagePath}
-                    onChange={(e) => setImagePath(e.target.value)}
-                    placeholder="e.g. C:/images/emergency_gate.jpg"
-                    className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-slate-300 focus:outline-none focus:border-indigo-500"
-                  />
-                  <p className="text-[9px] text-slate-500 mt-1">
-                    Provide the absolute path to an image file on your computer.
-                  </p>
+                  <div className="relative border border-dashed border-slate-700 hover:border-indigo-500/50 rounded-lg p-4 bg-slate-900/60 transition-colors flex flex-col items-center justify-center text-center">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <ImageIcon className="w-6 h-6 text-slate-500 mb-1.5 animate-pulse" />
+                    {imageFile ? (
+                      <div className="text-xs text-indigo-300 font-semibold truncate max-w-[200px]">
+                        {imageFile.name}
+                      </div>
+                    ) : (
+                      <>
+                        <div className="text-xs text-slate-400">Click or Drag Image here</div>
+                        <div className="text-[9px] text-slate-600 mt-0.5">Loads visual scene context into Gemma 4</div>
+                      </>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="text-[10px] text-slate-500 uppercase tracking-wider block mb-1">
