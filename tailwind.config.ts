@@ -13,7 +13,7 @@ module.exports = {
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
       colors: {
-        sentinel: {
+        vigil: {
           bg: "#020617",
           surface: "#0f172a",
           border: "#1e293b",

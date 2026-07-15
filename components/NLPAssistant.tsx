@@ -38,7 +38,7 @@ export default function NLPAssistant() {
         {
           role: "ai",
           content:
-            "Unable to reach the SENTINEL query engine. Please ensure the backend is running on localhost:8000.",
+            "Unable to reach the VIGIL query engine. Please ensure the backend is running on localhost:8000.",
         },
       ]);
     } finally {

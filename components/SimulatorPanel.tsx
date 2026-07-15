@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { triggerSensor, MOCK_EVENTS, type ReportDetail } from "@/lib/api";
-import { Radio, Loader2, ChevronDown, Zap } from "lucide-react";
+import { Radio, Loader2, ChevronDown, Zap, Volume2 } from "lucide-react";
 
 interface SimulatorPanelProps {
   onNewReport: (report: ReportDetail) => void;
@@ -80,7 +80,15 @@ export default function SimulatorPanel({ onNewReport }: SimulatorPanelProps) {
         <p className="text-xs text-slate-400 leading-relaxed">
           {MOCK_EVENTS[selectedEvent].payload.camera_feed_summary}
         </p>
-        <div className="flex gap-3 mt-2 text-[10px] text-slate-500">
+        
+        {MOCK_EVENTS[selectedEvent].payload.acoustic_tokens && (
+          <div className="mt-2 flex items-center gap-1.5 text-[10px] text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded border border-indigo-500/20 w-fit font-medium">
+            <Volume2 className="w-3 h-3 animate-pulse" />
+            <span>Acoustic: {MOCK_EVENTS[selectedEvent].payload.acoustic_tokens}</span>
+          </div>
+        )}
+        
+        <div className="flex gap-3 mt-2.5 text-[10px] text-slate-500">
           <span>📍 {MOCK_EVENTS[selectedEvent].payload.location}</span>
           <span>🕐 {MOCK_EVENTS[selectedEvent].payload.timestamp}</span>
           <span>👥 {MOCK_EVENTS[selectedEvent].payload.people_count}</span>

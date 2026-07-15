@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// SENTINEL API Client — All backend communication centralized
+// VIGIL API Client — All backend communication centralized
 // ─────────────────────────────────────────────────────────────
 
 const API_BASE = "http://localhost:8000";
@@ -55,6 +55,7 @@ export interface TriggerPayload {
   door_state: string;
   people_count: number;
   camera_feed_summary: string;
+  acoustic_tokens?: string;
 }
 
 export interface VerifyResponse {
@@ -83,6 +84,7 @@ export const MOCK_EVENTS: { label: string; payload: TriggerPayload }[] = [
       people_count: 12,
       camera_feed_summary:
         "Regular morning commuters entering through main gate with valid ID badges. No unusual behavior detected.",
+      acoustic_tokens: "[AUDIO: LOW_AMBIENT_CHATTER]"
     },
   },
   {
@@ -96,6 +98,7 @@ export const MOCK_EVENTS: { label: string; payload: TriggerPayload }[] = [
       people_count: 2,
       camera_feed_summary:
         "Two individuals in dark clothing tampering with server rack door locks.",
+      acoustic_tokens: "[AUDIO: METALLIC_SCRAPING]"
     },
   },
   {
@@ -109,6 +112,7 @@ export const MOCK_EVENTS: { label: string; payload: TriggerPayload }[] = [
       people_count: 3,
       camera_feed_summary:
         "Three uniformed cleaning staff with cleaning carts performing scheduled nightly cleaning.",
+      acoustic_tokens: "[AUDIO: WATER_SPLASHING]"
     },
   },
   {
@@ -122,6 +126,7 @@ export const MOCK_EVENTS: { label: string; payload: TriggerPayload }[] = [
       people_count: 1,
       camera_feed_summary:
         "Individual pushed open emergency exit gate triggering alarm. Person appears to be running from inside the building.",
+      acoustic_tokens: "[AUDIO: PERSISTENT_DOOR_BANGING]"
     },
   },
 ];

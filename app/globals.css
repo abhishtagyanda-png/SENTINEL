@@ -7,17 +7,17 @@
 
 /* ── CSS Custom Properties ───────────────────────────── */
 :root {
-  --sentinel-bg: #020617;
-  --sentinel-surface: #0f172a;
-  --sentinel-surface-2: #1e293b;
-  --sentinel-border: #334155;
-  --sentinel-accent: #6366f1;
-  --sentinel-accent-glow: rgba(99, 102, 241, 0.15);
-  --sentinel-text: #f8fafc;
-  --sentinel-text-muted: #94a3b8;
-  --sentinel-red: #ef4444;
-  --sentinel-amber: #f59e0b;
-  --sentinel-green: #10b981;
+  --vigil-bg: #020617;
+  --vigil-surface: #0f172a;
+  --vigil-surface-2: #1e293b;
+  --vigil-border: #334155;
+  --vigil-accent: #6366f1;
+  --vigil-accent-glow: rgba(99, 102, 241, 0.15);
+  --vigil-text: #f8fafc;
+  --vigil-text-muted: #94a3b8;
+  --vigil-red: #ef4444;
+  --vigil-amber: #f59e0b;
+  --vigil-green: #10b981;
 }
 
 /* ── Base Styles ─────────────────────────────────────── */
@@ -33,8 +33,8 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--sentinel-bg);
-  color: var(--sentinel-text);
+  background-color: var(--vigil-bg);
+  color: var(--vigil-text);
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -47,11 +47,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--sentinel-bg);
+  background: var(--vigil-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--sentinel-surface-2);
+  background: var(--vigil-surface-2);
   border-radius: 3px;
 }
 
@@ -60,7 +60,7 @@ body {
 }
 
 /* ── Cyberpunk Grid Background ───────────────────────── */
-.sentinel-grid-bg {
+.vigil-grid-bg {
   background-image:
     linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
@@ -118,9 +118,9 @@ body {
 .skeleton {
   background: linear-gradient(
     90deg,
-    var(--sentinel-surface) 25%,
-    var(--sentinel-surface-2) 50%,
-    var(--sentinel-surface) 75%
+    var(--vigil-surface) 25%,
+    var(--vigil-surface-2) 50%,
+    var(--vigil-surface) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s linear infinite;
@@ -150,7 +150,7 @@ body {
   border-radius: 50%;
   padding: 4px;
   background: conic-gradient(
-    var(--ring-color, var(--sentinel-accent)) calc(var(--score, 0) * 360deg),
+    var(--ring-color, var(--vigil-accent)) calc(var(--score, 0) * 360deg),
     rgba(51, 65, 85, 0.3) calc(var(--score, 0) * 360deg)
   );
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);

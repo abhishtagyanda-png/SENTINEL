@@ -35,7 +35,7 @@ export default function Header() {
         </div>
         <div>
           <h1 className="text-lg font-bold tracking-wide">
-            <span className="text-indigo-400">SENTINEL</span>
+            <span className="text-indigo-400">VIGIL</span>
           </h1>
           <p className="text-[10px] text-slate-500 tracking-widest uppercase">
             Operator Dashboard v1.0
